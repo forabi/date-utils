@@ -1,9 +1,14 @@
 module.exports = (context) ->
     pluralize: (n) ->
-        n is 1 ? 0 : 1
+        if n is 1 then 0 else 1
+
+    join: (array) ->
+        if array.length < 2 then array.join ''
+        else array[0..array.length - 2].join(', ') + " and #{array[array.length - 1]}"
+
 
     past: '${pretty} ago'
-    future: 'within ${pretty}'
+    future: 'in ${pretty}'
     now: 'just now'
 
     second: [

@@ -1,4 +1,6 @@
-class DateParser
+UNITS = require('./enums').UNITS
+
+class Parser
     SEC = 1000
     MIN = 60 * SEC
     HOUR = 60 * MIN
@@ -8,32 +10,32 @@ class DateParser
     YEAR = 365 * DAY
     abs = Math.abs
     rnd = Math.round
-    constructor: (date = new Date, relativeTo = new Date) ->
-        @date = new Date date
-        @relativeTo = new Date relativeTo
+
+    constructor: (@date, @relativeTo = new Date) ->
         return @parse()
-    difference: (from = @relativeTo) ->
-        abs diff = from - @date.getTime()
+
     parse: ->
-        rem = diff = @difference()
-        console.log "Difference #{diff}"
+        rem = diff = abs @relativeTo - @date
+        # console.log "Difference #{diff}"
         parsed = []
         finished = no
-        while rem > 0 and not finished
-            console.log "Remaining: #{rem}"
-            res = switch
-                when rem >= YEAR then [ rem, 'y', YEAR ]
-                when rem >= MONTH then  [ rem, 'M', MONTH ]
-                when rem >= WEEK then [ rem, 'w', WEEK ]
-                when rem >= DAY then [ rem, 'd', DAY ]
-                when rem >= HOUR then [ rem, 'h', HOUR ]
-                when rem >= MIN then [ rem, 'm', MIN ]
-                else
-                    finished = yes
-                    [ rem, 's', SEC ]
-            rem = diff % res[2]
-            res[0] = rnd res[0]/res[2]
-            parsed.push res[0..1]
+        if diff is 0 then parsed.push res = [ 0, UNITS.SEC ]
+        else
+            while rem > 0 and not finished
+                # console.log "Remaining: #{rem}"
+                res = switch
+                    when rem >= YEAR then [ rem, UNITS.YEAR, YEAR ]
+                    when rem >= MONTH then  [ rem, UNITS.MONTH, MONTH ]
+                    when rem >= WEEK then [ rem, UNITS.WEEK, WEEK ]
+                    when rem >= DAY then [ rem, UNITS.DAY, DAY ]
+                    when rem >= HOUR then [ rem, UNITS.HOUR, HOUR ]
+                    when rem >= MIN then [ rem, UNITS.MIN, MIN ]
+                    else
+                        finished = yes
+                        [ rem, UNITS.SEC, SEC ]
+                rem = diff % res[2]
+                res[0] = rnd res[0]/res[2]
+                parsed.push res[0..1]
         parsed
 
-module.exports = DateParser
+module.exports = Parser

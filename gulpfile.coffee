@@ -9,6 +9,7 @@ config = _.defaults gutil.env,
     env: if gutil.env.production then 'production' else 'development'
     src:
         coffee: ['date-utils.coffee']
+        tests: ['*.coffee']
     watch:
         coffee: ['*.coffee']
 
@@ -36,8 +37,7 @@ gulp.task 'coffee', ->
     .pipe gulp.dest "#{config.dest}"
 
 gulp.task 'test', ->
-    gulp.src [
-        'parser.spec.coffee'], cwd: 'tests'
+    gulp.src config.src.tests, cwd: 'tests'
     .pipe plugins.karma action: 'run', configFile: 'karma.conf.coffee'
     .on 'error', (err) -> throw err
 

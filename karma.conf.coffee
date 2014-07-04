@@ -1,5 +1,6 @@
 module.exports = (config) ->
   config.set
+    reporters: ['spec']
     frameworks: [ 'jasmine', 'browserify' ]
     browsers: [
         # 'Chrome'
@@ -8,10 +9,11 @@ module.exports = (config) ->
         ]
 
     plugins: [
+        'karma-spec-reporter'
         'karma-browserify'
         'karma-coffee-preprocessor'
-        # 'karma-chrome-launcher'
-        # 'karma-firefox-launcher'
+        'karma-chrome-launcher'
+        'karma-firefox-launcher'
         'karma-phantomjs-launcher'
         'karma-jasmine'
     ]

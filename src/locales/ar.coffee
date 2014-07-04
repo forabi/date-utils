@@ -1,9 +1,12 @@
 module.exports = (context) ->
-    pluralize: (n) ->
+    pluralize: (n) -> switch
         when n < 3 then n
         when n % 100 >= 3 and n % 100 <= 10 then 3
         when n % 100 >= 11 and n % 100 <= 99 then 4
         else 5
+
+    join: (array) ->
+        array.join ' و'
 
     past: 'منذ ${pretty}'
     future: 'بعد ${pretty}'
